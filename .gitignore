@@ -1,2 +1,4 @@
 *.txt
 *.mp3
+__pycache__
+get_market_data.py
