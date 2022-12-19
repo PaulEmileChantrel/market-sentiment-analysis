@@ -1,4 +1,5 @@
 from transformers import pipeline
+import pandas as pd
 
 def txt_sentiment(text:str)->list:
 
@@ -6,10 +7,29 @@ def txt_sentiment(text:str)->list:
     data = text.split('.')
     return sentiment_pipeline(data)
 
+def df_sentiment(df):
+    sentiment_pipeline = pipeline("sentiment-analysis")
+    df['label']=''
+    df['score']=''
+    df['sentiment']=''
+    text = list(df['text'])
+    sentiment = sentiment_pipeline(text)
+    df['sentiment']=sentiment
+    label = []
+    score = []
+    for s in sentiment:
+        label.append(s['label'])
+        score.append(s['score'])
+    df['label'] = label
+    df['score'] = score
+
+    return df
+
 def txt_overall_sentiment(text:str)->list:
     sentiment_pipeline = pipeline("sentiment-analysis")
-    
+
     return sentiment_pipeline(text)
+
 
 def sentiment_analysis(sentiments:list)->None:
     #Take the sentiment array in input and give the number of positive, negative, len, overall
